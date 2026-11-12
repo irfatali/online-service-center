@@ -22,4 +22,27 @@
   .brand small {
     font-size: 10px;
   }
+  /* Mobile Navigation Fix */
+@media(max-width:600px) {
+  .header-inner {
+    flex-wrap: wrap;
+  }
+
+  .header-inner nav {
+    display: flex !important;
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .header-inner nav a {
+    display: block;
+    padding: 8px;
+  }
+
+  .menu-toggle {
+    display: none !important;
+  }
+}
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
