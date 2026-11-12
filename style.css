@@ -568,4 +568,46 @@ nav a:hover,
     gap: 8px;
   }
 }
+
+/* Welcome Home Design */
+.welcome-design {
+  position: relative;
+  text-align: center;
+  padding: 50px 20px;
+  background: #fff8fc;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.welcome-design h1 {
+  color: #102a43;
+  font-size: 34px;
+  margin-bottom: 25px;
+}
+
+.welcome-image {
+  display: block;
+  width: 100%;
+  max-width: 850px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 18px;
+}
+
+.flower {
+  position: absolute;
+  font-size: 42px;
+}
+
+.flower-top-left { top: 10px; left: 10px; }
+.flower-top-right { top: 10px; right: 10px; }
+.flower-bottom-left { bottom: 10px; left: 10px; }
+.flower-bottom-right { bottom: 10px; right: 10px; }
+
+@media(max-width:600px) {
+  .welcome-design { padding: 55px 12px; }
+  .welcome-design h1 { font-size: 25px; }
+  .flower { font-size: 30px; }
+}
+
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
