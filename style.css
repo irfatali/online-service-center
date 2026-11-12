@@ -585,14 +585,16 @@ nav a:hover,
   margin-bottom: 25px;
 }
 
+
 .welcome-image {
   display: block;
   width: 100%;
-  max-width: 850px;
+  max-width: none;
   height: auto;
   margin: 0 auto;
-  border-radius: 18px;
+  border-radius: 0;
 }
+
 
 .flower {
   position: absolute;
