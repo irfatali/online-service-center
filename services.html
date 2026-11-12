@@ -8,19 +8,24 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="container nav-wrap">
-      <a class="brand" href="index.html">
-        <span class="brand-mark">JOSC</span>
-        <span><strong>Jafri Online Service Centre</strong><small>Your Local Digital Help Desk</small></span>
-      </a>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="index.html#about">About</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
-    </div>
+    
+<div class="container nav-wrap">
+  <a class="brand" href="index.html">
+    <span class="brand-mark">JOSC</span>
+    <span><strong>Jafri Online Service Centre</strong><small>Your Local Digital Help Desk</small></span>
+  </a>
+
+  <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+
+  <nav id="mainNav">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</div>
   </header>
+  
 
   <main>
     <section class="section" id="services">
@@ -51,5 +56,17 @@
       </div>
     </section>
   </main>
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mainNav = document.getElementById('mainNav');
+
+  menuToggle.addEventListener('click', function() {
+    mainNav.classList.toggle('open');
+    menuToggle.setAttribute(
+      'aria-expanded',
+      mainNav.classList.contains('open')
+    );
+  });
+</script>
 </body>
 </html>
