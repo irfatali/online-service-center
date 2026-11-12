@@ -465,7 +465,7 @@ nav a:hover,
 }
 
 /* Tablet */
-@media (max-width: 850px) {
+@media (max-width: 1100px;) {
   .hero-grid,
   .about-grid,
   .contact-grid {
