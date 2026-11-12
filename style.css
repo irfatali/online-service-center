@@ -11,20 +11,26 @@
   box-shadow: 0 4px 12px #102a4325;
   letter-spacing: 1px;
 }
-  @media(max-width:600px) {
+
+/* Mobile Logo */
+@media(max-width:600px) {
   .brand {
     gap: 8px;
   }
+
   .brand strong {
     font-size: 12px;
   }
+
   .brand small {
     font-size: 10px;
   }
-  /* Mobile Navigation Fix */
+}
+
+/* Mobile Navigation */
 @media(max-width:600px) {
   .header-inner {
-    flex-wrap: wrap;
+  flex-wrap: wrap;
   }
 
   .header-inner nav {
@@ -33,11 +39,7 @@
     width: 100%;
     gap: 12px;
     padding: 12px 0;
-  }
-
-  .header-inner nav a {
-    display: block;
-    padding: 8px;
+    position: static;
   }
 
   .menu-toggle {
