@@ -1,0 +1,424 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Information - Jafri Online Service Centre</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .service-info-page {
+      width: min(100% - 30px, 1150px);
+      margin: 45px auto;
+    }
+
+    .service-info-heading {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .service-info-heading h1 {
+      color: #102a43;
+      font-size: 32px;
+      margin: 12px 0;
+    }
+
+    .service-info-heading p {
+      color: #627d98;
+      line-height: 1.7;
+    }
+
+    .info-category {
+      margin-bottom: 35px;
+    }
+
+    .info-category h2 {
+      color: #1769aa;
+      font-size: 23px;
+      margin-bottom: 18px;
+      border-bottom: 2px solid #e4eef7;
+      padding-bottom: 10px;
+    }
+
+    .info-service-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .info-service-item {
+      background: #fff;
+      border: 1px solid #e5eaf0;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 5px 18px #102a4309;
+    }
+
+    .info-service-item h3 {
+      color: #102a43;
+      font-size: 17px;
+      margin-bottom: 9px;
+    }
+
+    .info-service-item p {
+      color: #627d98;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .service-info-note {
+      background: #e8f5ff;
+      color: #243b53;
+      padding: 20px;
+      border-radius: 14px;
+      line-height: 1.8;
+      margin: 25px 0;
+    }
+
+    .service-contact {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin: 30px 0;
+    }
+
+    .service-contact a {
+      padding: 14px 25px;
+      border-radius: 9px;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .service-call {
+      background: #0879d1;
+    }
+
+    .service-whatsapp {
+      background: #168b43;
+    }
+
+    @media(max-width: 650px) {
+      .service-info-page {
+        margin: 28px auto;
+      }
+
+      .service-info-heading h1 {
+        font-size: 26px;
+      }
+
+      .info-service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-category h2 {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav-wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">JOSC</span>
+      <span>
+        <strong>Jafri Online Service Centre</strong>
+        <small>Your Local Digital Help Desk</small>
+      </span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle"
+      aria-label="Open navigation" aria-expanded="false">☰</button>
+
+    <nav id="mainNav">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="service-info-page">
+
+  <div class="service-info-heading">
+    <span class="eyebrow">OUR SERVICES</span>
+    <h1>Service Information</h1>
+    <p>Explore the services available at Jafri Online Service Centre.</p>
+  </div>
+
+  <section class="info-category">
+    <h2>Government Documents & Certificates</h2>
+    <div class="info-service-grid">
+
+      <article class="info-service-item">
+        <h3>Domicile Certificate</h3>
+        <p>Assistance with domicile certificate applications and required documents.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>ST Certificate</h3>
+        <p>Guidance for Scheduled Tribe certificate applications and document submission.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Income Certificate</h3>
+        <p>Help with online income certificate applications and supporting documents.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Birth Certificate</h3>
+        <p>Assistance with birth certificate application and related online services.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Death Certificate</h3>
+        <p>Guidance for death certificate applications and required paperwork.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Ration Card</h3>
+        <p>Assistance with ration card applications and available online updates.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Aadhaar Card Services</h3>
+        <p>Guidance for available Aadhaar-related online services and information.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Election Card</h3>
+        <p>Help with voter registration and available election card application services.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>New PAN Card</h3>
+        <p>Assistance with new PAN card applications and related information.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>ABHA Card</h3>
+        <p>Guidance for creating an ABHA health account and related online assistance.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Golden Card</h3>
+        <p>Assistance with Ayushman Bharat Golden Card information and application steps.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>eShram Card</h3>
+        <p>Help with eShram registration and available card-related services.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Labour Card Renewal</h3>
+        <p>Guidance for labour card renewal and related online paperwork.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Pension Services</h3>
+        <p>Assistance with pension application information and available online processes.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="info-category">
+    <h2>Education & Recruitment Services</h2>
+    <div class="info-service-grid">
+
+      <article class="info-service-item">
+        <h3>JKSSB Forms</h3>
+        <p>Help with JKSSB recruitment forms, document preparation and application steps.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Railway Forms</h3>
+        <p>Assistance with railway recruitment applications and required documents.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Education Forms</h3>
+        <p>Help with school, college, university and other education-related forms.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Student ID Card</h3>
+        <p>Assistance with student ID card preparation and related services.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Computer Training</h3>
+        <p>Information and assistance regarding basic computer learning and training.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="info-category">
+    <h2>Travel & Licence Services</h2>
+    <div class="info-service-grid">
+
+      <article class="info-service-item">
+        <h3>Passport Assistance</h3>
+        <p>Guidance with passport application steps and document preparation.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Driving Licence</h3>
+        <p>Assistance with driving licence application information and online processes.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Flight Tickets</h3>
+        <p>Assistance with flight ticket search and booking information.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Train Tickets</h3>
+        <p>Assistance with train ticket availability and booking.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="info-category">
+    <h2>Banking, Loans & Financial Assistance</h2>
+    <div class="info-service-grid">
+
+      <article class="info-service-item">
+        <h3>Bank Account Opening</h3>
+        <p>Guidance with bank account opening processes and required documents.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Insurance Services</h3>
+        <p>Information and assistance regarding available insurance services.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>PM Kisan</h3>
+        <p>Assistance with PM Kisan scheme information and available online services.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Mission Yuva</h3>
+        <p>Guidance with Mission Yuva scheme applications and related information.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Buffalo Loan</h3>
+        <p>Assistance with information and application guidance for buffalo loan schemes.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Shop Loan</h3>
+        <p>Guidance about business loan options and bank application processes.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Car Loan</h3>
+        <p>Assistance with car loan information and bank application paperwork.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Land Loan</h3>
+        <p>Guidance regarding land-related loan options and required documents.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>House Loan</h3>
+        <p>Assistance with home loan information and bank application steps.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Sheep Loan</h3>
+        <p>Guidance regarding sheep farming loan information and application processes.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Goat Loan</h3>
+        <p>Guidance regarding goat farming loan information and application processes.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Cow Loan</h3>
+        <p>Guidance regarding dairy and cow loan information and application processes.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="info-category">
+    <h2>Other Centre Services</h2>
+    <div class="info-service-grid">
+
+      <article class="info-service-item">
+        <h3>Bathroom Assistance</h3>
+        <p>Guidance regarding Swachh Bharat Mission assistance and related applications.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Photo & Lamination</h3>
+        <p>Photo services, document lamination and related centre facilities.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Printing & Scanning</h3>
+        <p>Document printing, scanning, photocopy and digital file assistance.</p>
+      </article>
+
+      <article class="info-service-item">
+        <h3>Other Online Services</h3>
+        <p>Help with various online forms, applications and digital services.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="service-info-note">
+    <strong>Important Information:</strong>
+    We provide application assistance and guidance. Approval of certificates,
+    loans, licences and government services depends on the concerned
+    department, bank or authority. Service availability, documents and fees
+    should be confirmed with our centre before applying.
+  </div>
+
+  <div class="service-contact">
+    <a class="service-call" href="tel:+918492899651">☎ Call Now</a>
+    <a class="service-whatsapp"
+       href="https://wa.me/918492899651">WhatsApp Us</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>© 2026 Jafri Online Service Centre. All rights reserved.</p>
+    <p>Independent assistance centre. Not an official government website.</p>
+  </div>
+</footer>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mainNav = document.getElementById('mainNav');
+
+  menuToggle.addEventListener('click', function() {
+    mainNav.classList.toggle('open');
+    menuToggle.setAttribute(
+      'aria-expanded',
+      mainNav.classList.contains('open')
+    );
+  });
+</script>
+
+</body>
+  </html>
+        
