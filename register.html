@@ -4,35 +4,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Registration - JOSC</title>
+  <title>Register - Jafri Online Service Centre</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: #f3f8fc;
       margin: 0;
       padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #102a43, #1769aa);
     }
     .container {
-      max-width: 420px;
-      margin: 50px auto;
       background: white;
-      padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px #0001;
+      width: 100%;
+      max-width: 420px;
+      padding: 30px 25px;
+      border-radius: 15px;
     }
-    h2 { text-align: center; color: #102a43; }
+    h1 { text-align: center; color: #102a43; }
+    p { text-align: center; color: #627d98; }
     input {
       width: 100%;
-      box-sizing: border-box;
       padding: 13px;
       margin: 9px 0;
-      border: 1px solid #ccd6e0;
+      border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
     }
     button {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       margin-top: 12px;
       border: 0;
       border-radius: 8px;
@@ -40,32 +44,47 @@
       color: white;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
     }
-    .secondary { background: #25a65a; }
-    p { text-align: center; color: #526575; }
-    a { color: #1769aa; }
-    #message { overflow-wrap: anywhere; }
+    .green { background: #25a65a; }
+    .link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #1769aa;
+      text-decoration: none;
+    }
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      overflow-wrap: anywhere;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Create Your Account</h2>
-    <input type="text" id="name" placeholder="Your Full Name">
-    <input type="email" id="email" placeholder="Email Address">
-    <input type="password" id="password" placeholder="Create Password">
-    <button id="emailRegister">Register with Email</button>
+    <h1>Create Account</h1>
+    <p>Jafri Online Service Centre</p>
+
+    <h3>Email Registration</h3>
+    <input type="text" id="name" placeholder="Enter your full name">
+    <input type="email" id="email" placeholder="Enter your email">
+    <input type="password" id="password" placeholder="Create password (minimum 6 characters)">
+    <button id="registerEmail">Register with Email</button>
 
     <hr>
-    <p>Or register with mobile number</p>
-    <input type="tel" id="phone" placeholder="+91XXXXXXXXXX">
+
+    <h3>Phone OTP Registration</h3>
+    <input type="tel" id="phone" placeholder="Phone number with country code (+91)">
     <div id="recaptcha-container"></div>
-    <button class="secondary" id="sendOtp">Send OTP</button>
+    <button id="sendOtp">Send OTP</button>
     <input type="text" id="otp" placeholder="Enter OTP">
-    <button id="verifyOtp">Verify OTP & Register</button>
+    <button id="verifyOtp" class="green">Verify OTP & Register</button>
 
     <p id="message"></p>
-    <p>Already have an account? <a href="login.html">Login</a></p>
-    <p><a href="index.html">Back to Home</a></p>
+
+    <a class="link" href="login.html">Already have an account? Login</a>
+    <a class="link" href="index.html">Back to Welcome Page</a>
   </div>
 
   <script type="module">
@@ -78,46 +97,50 @@
     } from "./firebase.js";
 
     const message = document.getElementById("message");
-    let confirmationResult = null;
 
-    document.getElementById("emailRegister").addEventListener("click", async () => {
+    document.getElementById("registerEmail").addEventListener("click", async () => {
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
       if (!name || !email || password.length < 6) {
-        message.textContent = "Name, valid email aur kam az kam 6 characters ka password enter karein.";
+        message.textContent = "Name, valid email aur minimum 6 character password enter karein.";
         return;
       }
 
       try {
         const result = await createUserWithEmailAndPassword(auth, email, password);
         await sendEmailVerification(result.user);
-        message.textContent = "Account ban gaya! Email verification link apne inbox mein check karein.";
+        message.textContent = "Account ban gaya! Email verification link check karein. Home page khul raha hai...";
+        window.location.href = "home.html";
       } catch (error) {
-        message.textContent = error.message;
+        message.textContent = "Registration error: " + error.message;
       }
     });
+
+    let confirmationResult;
+    let recaptchaVerifier;
 
     document.getElementById("sendOtp").addEventListener("click", async () => {
       const phone = document.getElementById("phone").value.trim();
 
-      if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
-        message.textContent = "Mobile number country code ke saath likhein, jaise +91XXXXXXXXXX.";
+      if (!phone.startsWith("+") || phone.length < 10) {
+        message.textContent = "Phone number country code ke saath likhein. India ke liye +91.";
         return;
       }
 
       try {
-        if (!window.recaptchaVerifier) {
-          window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
+        if (!recaptchaVerifier) {
+          recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
         }
-        confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+
+        confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
         message.textContent = "OTP bhej diya gaya hai. Apna SMS check karein.";
       } catch (error) {
-        message.textContent = error.message;
-        if (window.recaptchaVerifier) {
-          window.recaptchaVerifier.clear();
-          window.recaptchaVerifier = null;
+        message.textContent = "OTP error: " + error.message;
+        if (recaptchaVerifier) {
+          recaptchaVerifier.clear();
+          recaptchaVerifier = null;
         }
       }
     });
@@ -126,15 +149,16 @@
       const otp = document.getElementById("otp").value.trim();
 
       if (!confirmationResult || !otp) {
-        message.textContent = "Pehle OTP bhejein, phir OTP enter karein.";
+        message.textContent = "Pehle OTP bhejein aur phir OTP enter karein.";
         return;
       }
 
       try {
         await confirmationResult.confirm(otp);
-        message.textContent = "Phone number se account successfully register ho gaya!";
+        message.textContent = "Registration successful! Home page khul raha hai...";
+        window.location.href = "home.html";
       } catch (error) {
-        message.textContent = error.message;
+        message.textContent = "OTP error: " + error.message;
       }
     });
   </script>
