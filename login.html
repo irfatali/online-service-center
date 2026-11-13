@@ -4,35 +4,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Login - JOSC</title>
+  <title>Login - Jafri Online Service Centre</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: Arial, sans-serif;
-      background: #f3f8fc;
       margin: 0;
       padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #102a43, #1769aa);
     }
     .container {
-      max-width: 420px;
-      margin: 50px auto;
       background: white;
-      padding: 25px;
-      border-radius: 14px;
-      box-shadow: 0 4px 18px #0001;
+      width: 100%;
+      max-width: 420px;
+      padding: 30px 25px;
+      border-radius: 15px;
     }
-    h2 { text-align: center; color: #102a43; }
+    h1 { text-align: center; color: #102a43; }
+    p { text-align: center; color: #627d98; }
     input {
       width: 100%;
-      box-sizing: border-box;
       padding: 13px;
       margin: 9px 0;
-      border: 1px solid #ccd6e0;
+      border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
     }
     button {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       margin-top: 12px;
       border: 0;
       border-radius: 8px;
@@ -40,33 +44,47 @@
       color: white;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
     }
-    .secondary { background: #25a65a; }
-    p { text-align: center; color: #526575; }
-    a { color: #1769aa; }
-    #message { overflow-wrap: anywhere; }
+    .green { background: #25a65a; }
+    .link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #1769aa;
+      text-decoration: none;
+    }
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      overflow-wrap: anywhere;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Customer Login</h2>
+    <h1>Welcome Back!</h1>
+    <p>Jafri Online Service Centre</p>
 
-    <input type="email" id="email" placeholder="Email Address">
-    <input type="password" id="password" placeholder="Password">
-    <button id="emailLogin">Login with Email</button>
-    <p><a href="#" id="resetPassword">Forgot Password?</a></p>
+    <h3>Email Login</h3>
+    <input type="email" id="email" placeholder="Enter your email">
+    <input type="password" id="password" placeholder="Enter your password">
+    <button id="emailLogin">Login</button>
+    <button id="forgotPassword" class="green">Forgot Password?</button>
 
     <hr>
-    <p>Or login with mobile number</p>
-    <input type="tel" id="phone" placeholder="+91XXXXXXXXXX">
+
+    <h3>Phone OTP Login</h3>
+    <input type="tel" id="phone" placeholder="Enter phone number with country code">
     <div id="recaptcha-container"></div>
-    <button class="secondary" id="sendOtp">Send OTP</button>
+    <button id="sendOtp">Send OTP</button>
     <input type="text" id="otp" placeholder="Enter OTP">
-    <button id="verifyOtp">Verify OTP & Login</button>
+    <button id="verifyOtp" class="green">Verify OTP & Login</button>
 
     <p id="message"></p>
-    <p>New customer? <a href="register.html">Create Account</a></p>
-    <p><a href="index.html">Back to Home</a></p>
+
+    <a class="link" href="register.html">Create New Account / Register</a>
+    <a class="link" href="index.html">Back to Welcome Page</a>
   </div>
 
   <script type="module">
@@ -79,56 +97,64 @@
     } from "./firebase.js";
 
     const message = document.getElementById("message");
-    let confirmationResult = null;
 
     document.getElementById("emailLogin").addEventListener("click", async () => {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
+      if (!email || !password) {
+        message.textContent = "Email aur password dono enter karein.";
+        return;
+      }
+
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        message.textContent = "Login successful!";
+        message.textContent = "Login successful! Home page khul raha hai...";
+        window.location.href = "home.html";
       } catch (error) {
-        message.textContent = error.message;
+        message.textContent = "Login error: " + error.message;
       }
     });
 
-    document.getElementById("resetPassword").addEventListener("click", async (event) => {
-      event.preventDefault();
+    document.getElementById("forgotPassword").addEventListener("click", async () => {
       const email = document.getElementById("email").value.trim();
 
       if (!email) {
-        message.textContent = "Pehle apna email address enter karein.";
+        message.textContent = "Pehle apna email enter karein.";
         return;
       }
 
       try {
         await sendPasswordResetEmail(auth, email);
-        message.textContent = "Password reset link email par bhej diya gaya hai.";
+        message.textContent = "Password reset link aapke email par bhej diya gaya hai.";
       } catch (error) {
-        message.textContent = error.message;
+        message.textContent = "Error: " + error.message;
       }
     });
+
+    let confirmationResult;
+    let recaptchaVerifier;
 
     document.getElementById("sendOtp").addEventListener("click", async () => {
       const phone = document.getElementById("phone").value.trim();
 
-      if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
-        message.textContent = "Mobile number country code ke saath likhein, jaise +91XXXXXXXXXX.";
+      if (!phone.startsWith("+") || phone.length < 10) {
+        message.textContent = "Phone number country code ke saath likhein. India ke liye +91.";
         return;
       }
 
       try {
-        if (!window.recaptchaVerifier) {
-          window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
+        if (!recaptchaVerifier) {
+          recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
         }
-        confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+
+        confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
         message.textContent = "OTP bhej diya gaya hai. Apna SMS check karein.";
       } catch (error) {
-        message.textContent = error.message;
-        if (window.recaptchaVerifier) {
-          window.recaptchaVerifier.clear();
-          window.recaptchaVerifier = null;
+        message.textContent = "OTP error: " + error.message;
+        if (recaptchaVerifier) {
+          recaptchaVerifier.clear();
+          recaptchaVerifier = null;
         }
       }
     });
@@ -137,17 +163,19 @@
       const otp = document.getElementById("otp").value.trim();
 
       if (!confirmationResult || !otp) {
-        message.textContent = "Pehle OTP bhejein, phir OTP enter karein.";
+        message.textContent = "Pehle OTP bhejein aur phir OTP enter karein.";
         return;
       }
 
       try {
         await confirmationResult.confirm(otp);
-        message.textContent = "Phone login successful!";
+        message.textContent = "Login successful! Home page khul raha hai...";
+        window.location.href = "home.html";
       } catch (error) {
-        message.textContent = error.message;
+        message.textContent = "OTP error: " + error.message;
       }
     });
   </script>
 </body>
-</html>
+  </html>
+  
