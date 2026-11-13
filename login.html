@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Login - JOSC</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f8fc;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 420px;
+      margin: 50px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 18px #0001;
+    }
+    h2 { text-align: center; color: #102a43; }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px;
+      margin: 9px 0;
+      border: 1px solid #ccd6e0;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: 8px;
+      background: #1769aa;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .secondary { background: #25a65a; }
+    p { text-align: center; color: #526575; }
+    a { color: #1769aa; }
+    #message { overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Customer Login</h2>
+
+    <input type="email" id="email" placeholder="Email Address">
+    <input type="password" id="password" placeholder="Password">
+    <button id="emailLogin">Login with Email</button>
+    <p><a href="#" id="resetPassword">Forgot Password?</a></p>
+
+    <hr>
+    <p>Or login with mobile number</p>
+    <input type="tel" id="phone" placeholder="+91XXXXXXXXXX">
+    <div id="recaptcha-container"></div>
+    <button class="secondary" id="sendOtp">Send OTP</button>
+    <input type="text" id="otp" placeholder="Enter OTP">
+    <button id="verifyOtp">Verify OTP & Login</button>
+
+    <p id="message"></p>
+    <p>New customer? <a href="register.html">Create Account</a></p>
+    <p><a href="index.html">Back to Home</a></p>
+  </div>
+
+  <script type="module">
+    import {
+      auth,
+      signInWithEmailAndPassword,
+      sendPasswordResetEmail,
+      RecaptchaVerifier,
+      signInWithPhoneNumber
+    } from "./firebase.js";
+
+    const message = document.getElementById("message");
+    let confirmationResult = null;
+
+    document.getElementById("emailLogin").addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        message.textContent = "Login successful!";
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    });
+
+    document.getElementById("resetPassword").addEventListener("click", async (event) => {
+      event.preventDefault();
+      const email = document.getElementById("email").value.trim();
+
+      if (!email) {
+        message.textContent = "Pehle apna email address enter karein.";
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        message.textContent = "Password reset link email par bhej diya gaya hai.";
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    });
+
+    document.getElementById("sendOtp").addEventListener("click", async () => {
+      const phone = document.getElementById("phone").value.trim();
+
+      if (!/^\+[1-9]\d{7,14}$/.test(phone)) {
+        message.textContent = "Mobile number country code ke saath likhein, jaise +91XXXXXXXXXX.";
+        return;
+      }
+
+      try {
+        if (!window.recaptchaVerifier) {
+          window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
+        }
+        confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
+        message.textContent = "OTP bhej diya gaya hai. Apna SMS check karein.";
+      } catch (error) {
+        message.textContent = error.message;
+        if (window.recaptchaVerifier) {
+          window.recaptchaVerifier.clear();
+          window.recaptchaVerifier = null;
+        }
+      }
+    });
+
+    document.getElementById("verifyOtp").addEventListener("click", async () => {
+      const otp = document.getElementById("otp").value.trim();
+
+      if (!confirmationResult || !otp) {
+        message.textContent = "Pehle OTP bhejein, phir OTP enter karein.";
+        return;
+      }
+
+      try {
+        await confirmationResult.confirm(otp);
+        message.textContent = "Phone login successful!";
+      } catch (error) {
+        message.textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>
