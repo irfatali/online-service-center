@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,15 +20,14 @@
       background: white;
       width: 100%;
       max-width: 420px;
-      padding: 30px 25px;
-      border-radius: 15px;
+      padding: 30px;
+      border-radius: 14px;
     }
-    h1 { text-align: center; color: #102a43; }
-    p { text-align: center; color: #627d98; }
+    h2 { text-align: center; color: #102a43; }
     input {
       width: 100%;
-      padding: 13px;
-      margin: 9px 0;
+      padding: 14px;
+      margin: 10px 0;
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
@@ -37,130 +35,71 @@
     button {
       width: 100%;
       padding: 14px;
-      margin-top: 12px;
+      margin-top: 15px;
       border: 0;
       border-radius: 8px;
       background: #1769aa;
       color: white;
       font-size: 16px;
       font-weight: bold;
-      cursor: pointer;
     }
-    .green { background: #25a65a; }
-    .link {
-      display: block;
-      text-align: center;
-      margin-top: 18px;
-      color: #1769aa;
-      text-decoration: none;
-    }
-    #message {
-      text-align: center;
-      margin-top: 15px;
-      overflow-wrap: anywhere;
-    }
+    p { text-align: center; }
+    a { color: #1769aa; }
+    #message { color: #1769aa; }
   </style>
 </head>
 <body>
+
   <div class="container">
-    <h1>Create Account</h1>
-    <p>Jafri Online Service Centre</p>
+    <h2>Create Account</h2>
 
-    <h3>Email Registration</h3>
-    <input type="text" id="name" placeholder="Enter your full name">
-    <input type="email" id="email" placeholder="Enter your email">
-    <input type="password" id="password" placeholder="Create password (minimum 6 characters)">
-    <button id="registerEmail">Register with Email</button>
-
-    <hr>
-
-    <h3>Phone OTP Registration</h3>
-    <input type="tel" id="phone" placeholder="Phone number with country code (+91)">
-    <div id="recaptcha-container"></div>
-    <button id="sendOtp">Send OTP</button>
-    <input type="text" id="otp" placeholder="Enter OTP">
-    <button id="verifyOtp" class="green">Verify OTP & Register</button>
+    <form id="registerForm">
+      <input type="email" id="email" placeholder="Enter Email Address" required>
+      <input type="password" id="password" placeholder="Create Password (minimum 6 characters)" required minlength="6">
+      <button type="submit">Register</button>
+    </form>
 
     <p id="message"></p>
-
-    <a class="link" href="login.html">Already have an account? Login</a>
-    <a class="link" href="index.html">Back to Welcome Page</a>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+    <p><a href="index.html">Back</a></p>
   </div>
 
   <script type="module">
     import {
       auth,
       createUserWithEmailAndPassword,
-      sendEmailVerification,
-      RecaptchaVerifier,
-      signInWithPhoneNumber
+      sendEmailVerification
     } from "./firebase.js";
 
+    const form = document.getElementById("registerForm");
     const message = document.getElementById("message");
 
-    document.getElementById("registerEmail").addEventListener("click", async () => {
-      const name = document.getElementById("name").value.trim();
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      if (!name || !email || password.length < 6) {
-        message.textContent = "Name, valid email aur minimum 6 character password enter karein.";
-        return;
-      }
+      message.textContent = "Please wait...";
 
       try {
-        const result = await createUserWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(result.user);
-        message.textContent = "Account ban gaya! Email verification link check karein. Home page khul raha hai...";
-        window.location.href = "home.html";
+        const userCredential =
+          await createUserWithEmailAndPassword(auth, email, password);
+
+        await sendEmailVerification(userCredential.user);
+
+        message.textContent =
+          "Account created! Verification email sent. Please check your email.";
+
+        setTimeout(() => {
+          window.location.href = "home.html";
+        }, 3000);
+
       } catch (error) {
-        message.textContent = "Registration error: " + error.message;
-      }
-    });
-
-    let confirmationResult;
-    let recaptchaVerifier;
-
-    document.getElementById("sendOtp").addEventListener("click", async () => {
-      const phone = document.getElementById("phone").value.trim();
-
-      if (!phone.startsWith("+") || phone.length < 10) {
-        message.textContent = "Phone number country code ke saath likhein. India ke liye +91.";
-        return;
-      }
-
-      try {
-        if (!recaptchaVerifier) {
-          recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {});
-        }
-
-        confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
-        message.textContent = "OTP bhej diya gaya hai. Apna SMS check karein.";
-      } catch (error) {
-        message.textContent = "OTP error: " + error.message;
-        if (recaptchaVerifier) {
-          recaptchaVerifier.clear();
-          recaptchaVerifier = null;
-        }
-      }
-    });
-
-    document.getElementById("verifyOtp").addEventListener("click", async () => {
-      const otp = document.getElementById("otp").value.trim();
-
-      if (!confirmationResult || !otp) {
-        message.textContent = "Pehle OTP bhejein aur phir OTP enter karein.";
-        return;
-      }
-
-      try {
-        await confirmationResult.confirm(otp);
-        message.textContent = "Registration successful! Home page khul raha hai...";
-        window.location.href = "home.html";
-      } catch (error) {
-        message.textContent = "OTP error: " + error.message;
+        message.textContent = error.message;
       }
     });
   </script>
+
 </body>
 </html>
