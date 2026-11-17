@@ -826,6 +826,21 @@ nav a:hover,
   background-color: #1da851 !important;
 }
 
+/* Fix empty space below footer */
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-footer {
+  margin-top: auto;
+}
 
 
 
